@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ruiqin.baseproject">
+          package="com.ruiqin.rxjava">
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <!-- 请求网络 -->
@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-
 
     <application
         android:name=".MyApplication"
@@ -44,8 +43,10 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data android:scheme="tencent100424468"/>
             </intent-filter>
         </activity>
@@ -54,7 +55,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
         <activity
             android:name=".module.home.MainActivity"
             android:screenOrientation="portrait">
@@ -68,8 +68,13 @@
         <activity android:name=".commonality.browse.x5webview.X5WebViewBrowseActivity"/>
         <activity
             android:name=".crash.CrashInfoActivity"
-            android:launchMode="singleTop"
-            >
+            android:launchMode="singleTop">
+        </activity>
+        <activity android:name=".module.rxjava.RxJavaDemo0Activity">
+        </activity>
+        <activity android:name=".module.rxjava.RxJavaDemo1Activity">
+        </activity>
+        <activity android:name=".module.rxjava.RxJavaDemo2Activity">
         </activity>
     </application>
 
