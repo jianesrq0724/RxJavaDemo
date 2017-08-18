@@ -7,7 +7,7 @@
 
 ## 补充说明
 * 项目基于MVP结构
-* 整个项目，自行封装了一些常用的方法，和工具类，只是对RxJava兴趣，只需看rxjava包下面的代码
+* 整个项目，自行封装了一些常用的方法，和工具类，**只是对RxJava兴趣，只需看rxjava包下面的代码**
 * 对整体项目感兴趣的，可以去看[BaseProJect](https://github.com/jianesrq0724/BaseProject)这个项目
 
 
