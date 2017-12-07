@@ -14,6 +14,7 @@ import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -23,6 +24,20 @@ public class RxJavaDemo0Activity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rx_java_demo0);
+
+        Flowable.just("1234").subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+
+            }
+        });
+
+        Observable.just("122").just("123").subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+
+            }
+        });
     }
 
     @Override
