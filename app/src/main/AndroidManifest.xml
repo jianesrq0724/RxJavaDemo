@@ -58,7 +58,12 @@
         <!--MainActivity-->
         <activity
             android:name="com.ruiqin.rxjavademo.module.home.MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!--TestActivity-->
         <activity android:name="com.ruiqin.rxjavademo.module.test.TestActivity" />
         <!--X5WebView-->
@@ -70,10 +75,7 @@
         <activity android:name="com.ruiqin.rxjavademo.module.demo.PickerViewDemoActivity" />
         <!--登陆-->
         <activity android:name="com.ruiqin.rxjavademo.module.login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
 
