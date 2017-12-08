@@ -1,11 +1,14 @@
 package com.ruiqin.rxjava.module.rxjava;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 
 import com.ruiqin.rxjava.R;
 import com.ruiqin.rxjava.base.BaseActivity;
 import com.ruiqin.rxjava.util.ToastUtils;
+
+import java.util.concurrent.Callable;
 
 import butterknife.OnClick;
 import io.reactivex.BackpressureStrategy;
@@ -24,6 +27,21 @@ public class RxJavaDemo0Activity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rx_java_demo0);
+
+
+        Flowable.fromCallable(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                SystemClock.sleep(1000);
+                return "1243";
+            }
+        }).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+
+            }
+        });
+
 
         Flowable.just("1234").subscribe(new Consumer<String>() {
             @Override
