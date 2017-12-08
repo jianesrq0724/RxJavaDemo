@@ -5,7 +5,9 @@ import android.view.View;
 
 import com.ruiqin.rxjavademo.R;
 import com.ruiqin.rxjavademo.base.BaseActivity;
-import com.ruiqin.rxjavademo.commonality.view.LoadingDialog;
+import com.ruiqin.rxjavademo.interfaces.ILoading;
+import com.ruiqin.rxjavademo.util.LogUtils;
+import com.ruiqin.rxjavademo.util.RxUtils;
 import com.ruiqin.rxjavademo.util.ToastUtils;
 
 import java.util.concurrent.Callable;
@@ -13,12 +15,13 @@ import java.util.concurrent.Callable;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class RxJavaDemo1Activity extends BaseActivity {
+/**
+ * 线程调用
+ */
+public class RxJavaSchedulerActivity extends BaseActivity {
 
     @Override
     protected void initData() {
@@ -27,12 +30,12 @@ public class RxJavaDemo1Activity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        mToolbarTitle.setText("RxJava线程调用");
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_rx_java_demo1;
+        return R.layout.activity_rxjava_scheduler;
     }
 
     @Override
@@ -59,53 +62,53 @@ public class RxJavaDemo1Activity extends BaseActivity {
      * map
      */
     private void onClickBtn1() {
-        Flowable.just(2).map(new Function<Integer, Integer>() {
+        LogUtils.e("1 Thread: " + Thread.currentThread());
+
+        showLoading();
+
+        Flowable.fromCallable(new Callable<String>() {
             @Override
-            public Integer apply(@NonNull Integer integer) throws Exception {
-                return integer * integer;
+            public String call() throws Exception {
+                SystemClock.sleep(2000);
+                LogUtils.e("2 Thread: " + Thread.currentThread());
+                return "Done";
             }
-        }).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Integer>() {
+        })
+                .compose(RxUtils.getScheduler(true, (ILoading) mContext))
+                .subscribe(new Consumer<String>() {
                     @Override
-                    public void accept(@NonNull Integer s) throws Exception {
-                        ToastUtils.showShort(s + "");
+                    public void accept(String s) throws Exception {
+                        dismissLoading();
+                        LogUtils.e("3 Thread: " + Thread.currentThread());
+                        ToastUtils.showShort(s);
                     }
-                });
+                }, Throwable::printStackTrace);
     }
 
     /**
      * fromCallable
      */
     private void onClickBtn0() {
-        showLoading();
+        LogUtils.e("1 Thread: " + Thread.currentThread());
+
         Flowable.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {
                 SystemClock.sleep(2000);
+                LogUtils.e("2 Thread: " + Thread.currentThread());
                 return "Done";
             }
         })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> {
-                    ToastUtils.showShort(s);
-                    cancelLoading();
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        LogUtils.e("3 Thread: " + Thread.currentThread());
+                        ToastUtils.showShort(s);
+                    }
                 }, Throwable::printStackTrace);
     }
 
-    LoadingDialog mLoadingDialog;
 
-    private void showLoading() {
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog(mContext);
-        }
-        mLoadingDialog.show();
-    }
-
-    private void cancelLoading() {
-        if (mLoadingDialog != null) {
-            mLoadingDialog.cancel();
-        }
-    }
 }

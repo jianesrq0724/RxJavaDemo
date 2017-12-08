@@ -22,6 +22,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * RxJava背压处理
+ */
 public class BackPressureDemo extends BaseActivity {
 
     @Override
@@ -31,12 +34,12 @@ public class BackPressureDemo extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        mToolbarTitle.setText("RxJava背压处理");
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_back_pressure_demo;
+        return R.layout.activity_back_pressure;
     }
 
     @OnClick({R.id.button, R.id.button2})

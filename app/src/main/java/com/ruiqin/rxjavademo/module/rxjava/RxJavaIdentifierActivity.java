@@ -4,7 +4,6 @@ import android.view.View;
 
 import com.ruiqin.rxjavademo.R;
 import com.ruiqin.rxjavademo.base.BaseActivity;
-import com.ruiqin.rxjavademo.commonality.view.LoadingDialog;
 import com.ruiqin.rxjavademo.util.ToastUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -15,7 +14,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
-public class RxJavaDemo2Activity extends BaseActivity {
+/**
+ * RxJava标识符
+ */
+public class RxJavaIdentifierActivity extends BaseActivity {
 
     @Override
     protected void initData() {
@@ -24,7 +26,7 @@ public class RxJavaDemo2Activity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        mToolbarTitle.setText("RxJava标识符");
     }
 
     @Override
@@ -66,21 +68,4 @@ public class RxJavaDemo2Activity extends BaseActivity {
                 }, Throwable::printStackTrace);
     }
 
-    /**
-     * 加载进度条
-     */
-    LoadingDialog mLoadingDialog;
-
-    private void showLoading() {
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog(mContext);
-        }
-        mLoadingDialog.show();
-    }
-
-    private void cancelLoading() {
-        if (mLoadingDialog != null) {
-            mLoadingDialog.cancel();
-        }
-    }
 }
