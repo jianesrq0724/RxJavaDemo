@@ -8,6 +8,8 @@ import com.ruiqin.rxjavademo.util.LogUtils;
 import com.ruiqin.rxjavademo.util.RxManage;
 import com.ruiqin.rxjavademo.util.ToastUtils;
 
+import org.reactivestreams.Publisher;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -74,10 +76,7 @@ public class RxJavaIdentifierActivity extends BaseActivity {
          * 姓名
          */
         private String name;
-        /**
-         * 所修的课程
-         */
-        private List<Course> coursesList;
+
         /**
          * 年龄
          */
@@ -88,26 +87,12 @@ public class RxJavaIdentifierActivity extends BaseActivity {
             this.age = age;
         }
 
-        public Student(String name, List<Course> coursesList, int age) {
-            this.name = name;
-            this.coursesList = coursesList;
-            this.age = age;
-        }
-    }
-
-    /**
-     * 课程类
-     */
-    class Course {
-        /**
-         * 课程名
-         */
-        private String name;
-        private String id;
-
-        public Course(String name, String id) {
-            this.name = name;
-            this.id = id;
+        @Override
+        public String toString() {
+            return "Student{" +
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    '}';
         }
     }
 
@@ -118,28 +103,23 @@ public class RxJavaIdentifierActivity extends BaseActivity {
     private void onClickBtn3() {
         List<Student> students = new ArrayList<Student>();
         for (int i = 0; i < 6; i++) {
-            List<Course> courseList = new ArrayList<>();
-            courseList.add(new Course("course0", "id0"));
-            courseList.add(new Course("course1", "id1"));
-            courseList.add(new Course("course2", "id2"));
-            students.add(new Student("ruiqin" + i, courseList, i));
+            students.add(new Student("test" + i, 24 + i));
         }
 
-
-        Flowable.just(students)
-                .map(new Function<List<Student>, Object>() {
+        Flowable.timer(2, TimeUnit.MICROSECONDS)
+                .flatMap(new Function<Long, Publisher<List<Student>>>() {
                     @Override
-                    public Object apply(List<Student> students) throws Exception {
-
-                        return null;
+                    public Publisher<List<Student>> apply(Long aLong) throws Exception {
+                        return Flowable.just(students);
                     }
-                })
-                .observeOn(Schedulers.newThread())
+                }).observeOn(Schedulers.newThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Object>() {
+                .subscribe(new Consumer<List<Student>>() {
                     @Override
-                    public void accept(Object o) throws Exception {
-
+                    public void accept(List<Student> students) throws Exception {
+                        for (Student student : students) {
+                            LogUtils.e(student.toString());
+                        }
                     }
                 }, Throwable::printStackTrace);
 
@@ -150,6 +130,7 @@ public class RxJavaIdentifierActivity extends BaseActivity {
      * 值转换、类型转换
      */
     private void onClickBtn2() {
+
 
         Flowable.just(new Student("ruiqin", 24))
                 .map(new Function<Student, String>() {
