@@ -19,6 +19,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * RxJava标识符
@@ -118,13 +119,29 @@ public class RxJavaIdentifierActivity extends BaseActivity {
         List<Student> students = new ArrayList<Student>();
         for (int i = 0; i < 6; i++) {
             List<Course> courseList = new ArrayList<>();
-            courseList.add(new Course("course" + i, "id0"));
+            courseList.add(new Course("course0", "id0"));
             courseList.add(new Course("course1", "id1"));
             courseList.add(new Course("course2", "id2"));
-            students.add(new Student("ruiqin0", courseList, 24));
+            students.add(new Student("ruiqin" + i, courseList, i));
         }
 
 
+        Flowable.just(students)
+                .map(new Function<List<Student>, Object>() {
+                    @Override
+                    public Object apply(List<Student> students) throws Exception {
+
+                        return null;
+                    }
+                })
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+
+                    }
+                }, Throwable::printStackTrace);
 
     }
 
