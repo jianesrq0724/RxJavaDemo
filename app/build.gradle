@@ -8,37 +8,31 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     useLibrary 'org.apache.http.legacy'
+
+    //签名配置
+    signingConfigs {
+        config {
+            keyAlias props['KEY_ALIAS']
+            keyPassword props['KEY_PASSWORD']
+            storeFile file(props['KEYSTORE_FILE'])
+            storePassword props['KEYSTORE_PASSWORD']
+        }
+    }
+
     defaultConfig {
         applicationId "com.ruiqin.rxjavademo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.2"
+        signingConfig signingConfigs.config
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
 
-    //签名配置
-    signingConfigs {
-        debug {
-            keyAlias props['KEY_ALIAS']
-            keyPassword props['KEY_PASSWORD']
-            storeFile file(props['KEYSTORE_FILE'])
-            storePassword props['KEYSTORE_PASSWORD']
-        }
-        release {
-            keyAlias props['KEY_ALIAS']
-            keyPassword props['KEY_PASSWORD']
-            storeFile file(props['KEYSTORE_FILE'])
-            storePassword props['KEYSTORE_PASSWORD']
-        }
-    }
-
-
     buildTypes {
         //开发环境
         develop {
-            signingConfig signingConfigs.debug
             debuggable true
             minifyEnabled false// 是否混淆
             shrinkResources false// 是否去除无效的资源文件
@@ -54,7 +48,6 @@ android {
 
         //测试环境
         experiment {
-            signingConfig signingConfigs.debug
             debuggable true
             minifyEnabled false
             shrinkResources false
@@ -68,7 +61,7 @@ android {
         //debug环境
         debug {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             buildConfigField "String", "Url_Common", '"http://app.fulijr.com/api/"'
             buildConfigField "int", "URL_TYPE", "2"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -78,7 +71,6 @@ android {
 
         //正式环境
         release {
-            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             debuggable false
