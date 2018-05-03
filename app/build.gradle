@@ -6,7 +6,6 @@ props.load(new FileInputStream(file("signing.properties")))
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
     useLibrary 'org.apache.http.legacy'
 
     //签名配置
